@@ -16,7 +16,7 @@ const somIniciar = new Audio('/sons/play.wav');
 const somPausar = new Audio('/sons/pause.mp3');
 const somFimDoTempo = new Audio('/sons/beep.mp3');
 
-let tempoDecorridoEmSegundos = 1500;
+let tempoDecorridoEmSegundos = 10; //1500
 let intervaloId = null;
 
 musica.loop = true;
@@ -30,19 +30,19 @@ musicaFocoInput.addEventListener('change', () => {
 })
 
 botaoFoco.addEventListener('click', () => {
-    tempoDecorridoEmSegundos = 1500;
+    tempoDecorridoEmSegundos = 10; //1500
     alterarContexto('foco');
     botaoFoco.classList.add("active");
 });
 
 botaoDescansoCurto.addEventListener('click', () => {
-    tempoDecorridoEmSegundos = 300;
+    tempoDecorridoEmSegundos = 10; //300
     alterarContexto('descanso-curto');
     botaoDescansoCurto.classList.add("active");
 });
 
 botaoDescansoLongo.addEventListener('click', () => {
-    tempoDecorridoEmSegundos = 900;
+    tempoDecorridoEmSegundos = 10; //900
     alterarContexto('descanso-longo');
     botaoDescansoLongo.classList.add("active");
 });
@@ -73,6 +73,11 @@ const contagemRegressiva = () => {
     if(tempoDecorridoEmSegundos <= 0) {
         somFimDoTempo.play()
         alert('Tempo Finalizado');
+        const focoAtivo = html.getAttribute('data-contexto') == 'foco';
+        if(focoAtivo) {
+            const evento = new CustomEvent('FocoFinalizado');
+            document.dispatchEvent(evento);
+        }
         zerar();
         return
     }
